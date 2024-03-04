@@ -1,5 +1,8 @@
 ---
 import Socialsbar from "./socialsbar.astro";
+const get = async (link) => {
+
+}
 ---
 
 <div
@@ -27,5 +30,14 @@ import Socialsbar from "./socialsbar.astro";
     <!-- <Socialsbar /> -->
 
     <h1>Nothing shown yet lol, url shortener is currently being designed by JadeBetty, wait for a few years pls </h1>
+    <button onclick="  await fetch("/api/generate", {
+      method: "POST",
+      body: JSON.stringify({
+        link: link
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })">hey there</button>
   </div>
 </div>
