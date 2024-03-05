@@ -1,18 +1,25 @@
 import type { APIRoute } from "astro";
 import linkSchema from "../../schemas/link.ts";
-
+import { disconnect, connect } from "mongoose";
 export const POST: APIRoute = async ({ request }) => {
   // console.log(request)
+
+  const uri = import.meta.env.dburi;
+  const options = {};
+
+  await connect(uri, options);
+
+
   try {
     const linkData = await request.json();
-    console.log(linkData.link)
+    console.log(linkData.link);
     if (!linkData) {
       return new Response(
         JSON.stringify({ message: "Missing link parameter" }),
         { status: 400 }
       );
     }
-    console.log(linkSchema)
+    console.log(linkSchema);
     let link = await linkSchema.findOne({ longurl: linkData.link });
 
     if (link) {
@@ -27,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const shorturl = generateShortUrl();
-    
+
     const expDate = new Date();
     expDate.setDate(expDate.getDate() + 1);
 
@@ -37,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
       JSON.stringify({ message: "Short link created successfully", shorturl }),
       { status: 200 }
     );
-    console.log("yay it worked" + shorturl)
+    console.log("yay it worked" + shorturl);
   } catch (error) {
     console.error("Error handling request:", error);
     return new Response(JSON.stringify({ message: "Internal Server Error" }), {
@@ -55,4 +62,7 @@ function generateShortUrl() {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
+
+
+  disconnect();
 }
