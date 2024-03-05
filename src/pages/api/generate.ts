@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
 import linkSchema from "../../schemas/link.ts";
 import { disconnect, connect } from "mongoose";
+
+
 export const POST: APIRoute = async ({ request }) => {
   // console.log(request)
 
@@ -63,6 +65,6 @@ function generateShortUrl() {
   }
   return result;
 
-
-  disconnect();
 }
+
+disconnect();

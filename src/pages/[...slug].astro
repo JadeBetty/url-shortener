@@ -12,7 +12,13 @@ if (!longurl) return Astro.redirect("/404");
 
 disconnect();
 ---
-
+<meta name="author" content="JadeBetty" />
+<meta
+  name="description"
+  content="A redirect link"
+/>
 longurl ? (
 <meta http-equiv="refresh" content={`0; url=${longurl.longurl}`} />
 )
+
+

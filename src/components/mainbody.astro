@@ -1,41 +1,40 @@
 ---
-import Socialsbar from "./socialsbar.astro";
+
 ---
 
 <div
   id="body"
   class="text-text max-w-[20rem] pt-[10rem] m-auto flex lg:pt-[15rem] lg:max-w-[75rem] items-center justify-center"
 >
-  <div class="flex pt-8 items-center justify-center">
-    <!-- <p id="hello-text" class="text-xl font-medium lg:text-2xl lg:w-[800px]">
-      URL <span class="underline text-[#4EC2A7] underline-offset-8"
-        >Shortener</span
-      >
-    </p> -->
-    <!-- <p
-      id="description"
-      class="font-[550] mt-[0.75rem] text-sm max-w-md mb-[1rem] md:text-md"
-    >
-      A self taught programmer who knows his way into JavaScript.
-      <br />
-      <br />
-      I'm a junior-high school programmer who is interested in computers, with games
-      like Uncharted 4 being my favorite.
-      <br />
-      <span class="text-xs font-light">I use Windows, btw</span>
-    </p> -->
-    <!-- <Socialsbar /> -->
-
+  <!-- <div class="flex pt-8 items-center justify-center">
     <h1>
       Nothing shown yet lol, url shortener is currently being designed by
       JadeBetty, wait for a few years pls
     </h1>
+  </div> -->
 
-    <button id="generateId">hey there</button>
+  <div class="">
+    <h1 class="text-center text-3xl pb-12">
+      <span class="text-[#4ec2a7]">URL</span> Shortener
+    </h1>
+    <div class="flex flex-row m-auto items-center">
+      <input
+        type="text"
+        placeholder="Type in your link here..."
+        class="placeholder:text-[#a8a8a6] bg-[#12130e] h-[51px] w-[300px] rounded-full text-center ml-5"
+      />
+      <img src="/images/arrow.png" class="ml-5 w-[45px] h-8 mt-2"/>
+      <div
+        class="text-[#a8a8a6] bg-[#12130e] h-[51px] w-[300px] rounded-full text-center items-center flex justify-center ml-5"
+      >
+        <p>https://links.jadebetty.me/123456</p>
+      </div>
+    </div>
 
+    <!-- <button id="generateId">hey there</button> -->
     <script>
       const get = async () => {
-        const link = "https://pornhub.com";
+        const link = "https://youtube.com";
         await fetch("/api/generate", {
           method: "POST",
           body: JSON.stringify({ link: link }),
