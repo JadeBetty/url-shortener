@@ -1,9 +1,12 @@
-import {Schema, model} from "mongoose";
-
-const link = new Schema({
+import mongoose from "mongoose";
+const { Schema, model, models } = mongoose;
+const link = new Schema(
+  {
     shorturl: String,
     exp: Date,
-    longurl: String
-});
+    longurl: String,
+  },
+  { typeKey: "$type" }
+);
 
-export default model("Links_data", link);
+export default models.Links_data || model("Links_data", link);

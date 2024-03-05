@@ -1,8 +1,5 @@
 ---
 import Socialsbar from "./socialsbar.astro";
-const get = async (link) => {
-
-}
 ---
 
 <div
@@ -29,15 +26,25 @@ const get = async (link) => {
     </p> -->
     <!-- <Socialsbar /> -->
 
-    <h1>Nothing shown yet lol, url shortener is currently being designed by JadeBetty, wait for a few years pls </h1>
-    <button onclick="  await fetch("/api/generate", {
-      method: "POST",
-      body: JSON.stringify({
-        link: link
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })">hey there</button>
+    <h1>
+      Nothing shown yet lol, url shortener is currently being designed by
+      JadeBetty, wait for a few years pls
+    </h1>
+
+    <button id="generateId">hey there</button>
+
+    <script>
+      const get = async () => {
+        const link = "https://pornhub.com";
+        await fetch("/api/generate", {
+          method: "POST",
+          body: JSON.stringify({ link: link }),
+          headers: { "Content-Type": "application/json" },
+        });
+      };
+
+      const generateButton = document.getElementById("generateId");
+      generateButton.addEventListener("click", get);
+    </script>
   </div>
 </div>

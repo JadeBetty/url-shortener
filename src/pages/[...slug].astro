@@ -1,0 +1,14 @@
+---
+import linkSchema from "../schemas/link";
+
+
+const path = Astro.url.href.split("/")[3];
+console.log(path)
+
+const longurl = await linkSchema.findOne({ shorturl: path });
+if(!longurl) return Astro.redirect("/404");
+
+console.log(longurl)
+Astro.redirect(longurl.longurl)
+---
+
