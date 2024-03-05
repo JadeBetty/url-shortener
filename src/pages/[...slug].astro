@@ -1,14 +1,16 @@
 ---
 import linkSchema from "../schemas/link";
-
+import { disconnect, connect } from "mongoose";
 const path = Astro.url.href.split("/")[3];
-console.log(path);
 
+const uri = import.meta.env.dburi;
+const options = {};
+
+await connect(uri, options);
 const longurl = await linkSchema.findOne({ shorturl: path });
 if (!longurl) return Astro.redirect("/404");
 
-console.log(longurl);
-console.log(Astro.redirect(longurl.longurl));
+disconnect();
 ---
 
 longurl ? (
