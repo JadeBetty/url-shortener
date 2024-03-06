@@ -1,18 +1,7 @@
----
-
----
-
 <div
   id="body"
   class="text-text max-w-[20rem] pt-[10rem] m-auto flex lg:pt-[15rem] lg:max-w-[75rem] items-center justify-center"
 >
-  <!-- <div class="flex pt-8 items-center justify-center">
-    <h1>
-      Nothing shown yet lol, url shortener is currently being designed by
-      JadeBetty, wait for a few years pls
-    </h1>
-  </div> -->
-
   <div class="">
     <h1 class="text-center text-3xl pb-12">
       <span class="text-[#4ec2a7]">URL</span> Shortener
@@ -28,27 +17,27 @@
       <button id="generateButton"
         ><img
           src="/images/arrow.png"
-          class="md:ml-5 w-[45px] h-8 mb-3 rotate-90 md:rotate-0"
+          class="md:ml-5 w-[45px] h-8 mb-4 rotate-90 md:rotate-0"
         /></button
       >
       <div
         class="text-text bg-[#12130e] h-[51px] w-[300px] rounded-full text-center items-center flex justify-center mb-5 md:ml-5"
       >
-        <p>https://links.jadebetty.me/123456</p>
+        <p id="link-p">https://links.jadebetty.me/12345</p>
       </div>
     </div>
-    <div class="flex text-center justify-start pl-16">
-      <p class=" text-red-500" id="hidden-text">
+    <div class="flex text-center justify-center">
+      <p class="text-red-500 hidden" id="hidden-text">
         Invalid link, please try again
       </p>
+      <p class="text-red-500 hidden" id="timeout-text">
+        Please wait for 20 seconds until you can generate another link.
+      </p>
     </div>
-
-
-    <!-- <button id="generateId">hey there</button> -->
     <script>
       const urlPattern =
-            /^((http|https):\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?].*)?$/i;
-      const get = async () => {
+        /^((http|https):\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?].*)?$/i;
+      const generateLink = async () => {
         const link = document.getElementById("input-link").value;
         if (!urlPattern.test(link)) {
           document.getElementById("hidden-text").classList.remove("hidden");
@@ -56,25 +45,52 @@
         } else {
           document.getElementById("hidden-text").classList.add("hidden");
         }
-
-        try {
-          await fetch("/api/generate", {
-            method: "POST",
-            body: JSON.stringify({ link: link }),
-            headers: { "Content-Type": "application/json" },
-          });
-        } catch (e) {}
+        let lastTime = Number(localStorage.getItem("lastTime"));
+        const currentTime = new Date().getTime();
+        if (!lastTime || currentTime - lastTime >= 20000) {
+          console.log("uh oh, looks like it no no wanna work");
+          try {
+            const response = await fetch("/api/generate", {
+              method: "POST",
+              body: JSON.stringify({ link: link }),
+              headers: { "Content-Type": "application/json" },
+            });
+            console.log(response);
+            if (response.ok) {
+              const data = await response.json();
+              if (data.id === "used-link") {
+                const text = `https://links.jadebetty.me/${data.shortlink}`;
+                document.getElementById("link-p").innerText = text;
+                localStorage.setItem("timeout", "true");
+              } else if (data.id === "missing-link") {
+                document
+                  .getElementById("hidden-text")
+                  .classList.remove("hidden");
+              } else if (data.id === "success-link") {
+                const text = `https://links.jadebetty.me/${data.shortlink}`;
+                document.getElementById("link-p").innerText = text;
+              }
+              localStorage.setItem("lastTime", `${currentTime}`);
+              console.log(data);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        } else {
+          document.getElementById("timeout-text").classList.remove("hidden");
+        }
       };
 
       const generateButton = document.getElementById("generateButton");
-      generateButton.addEventListener("click", get);
+      generateButton.addEventListener("click", generateLink);
 
       document
         .querySelector("#input-link")
         .addEventListener("input", function (e) {
-          
           if (this.value === "" || urlPattern.test(this.value)) {
             document.getElementById("hidden-text").classList.add("hidden");
+            const text = `https://links.jadebetty.me/12345`;
+            document.getElementById("link-p").innerText = text;
           }
         });
     </script>

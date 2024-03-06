@@ -4,8 +4,6 @@ import { disconnect, connect } from "mongoose";
 
 
 export const POST: APIRoute = async ({ request }) => {
-  // console.log(request)
-
   const uri = import.meta.env.dburi;
   const options = {};
 
@@ -17,22 +15,23 @@ export const POST: APIRoute = async ({ request }) => {
     console.log(linkData.link);
     if (!linkData) {
       return new Response(
-        JSON.stringify({ message: "Missing link parameter" }),
+        JSON.stringify({ message: "Missing link parameter", id: "missing-link" }),
         { status: 400 }
       );
     }
-    console.log(linkSchema);
     let link = await linkSchema.findOne({ longurl: linkData.link });
-
     if (link) {
       return new Response(
         JSON.stringify({
           message:
             "The link has been used before. Reusing the same short link.",
           shortlink: link.shorturl,
+          id: "used-link"
         }),
         { status: 200 }
       );
+
+
     }
 
     const shorturl = generateShortUrl();
@@ -41,15 +40,14 @@ export const POST: APIRoute = async ({ request }) => {
     expDate.setDate(expDate.getDate() + 1);
 
     await linkSchema.create({ longurl: linkData.link, shorturl, exp: expDate });
-
-    new Response(
-      JSON.stringify({ message: "Short link created successfully", shorturl }),
+    return new Response(
+      JSON.stringify({ message: "Short link created successfully", shortlink: shorturl, id: "success-link"}),
       { status: 200 }
     );
-    console.log("yay it worked" + shorturl);
+
   } catch (error) {
     console.error("Error handling request:", error);
-    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+    return new Response(JSON.stringify({ message: "Internal Server Error", id: "server-error" }), {
       status: 500,
     });
   }
