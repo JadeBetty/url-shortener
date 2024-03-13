@@ -5,9 +5,14 @@ import { verifyKey, InteractionType, InteractionResponseType } from "discord-int
 
 export const POST: APIRoute = async ({ request }) => {
   const body = request;
-
-  verify(process.env.pub_key).catch((e) => { return console.log(e)});
+  try {
+    verify(process.env.pub_key);
+  } catch (e) {
+    console.log(e);
+  }
   
+
+
   const uri = import.meta.env.dburi;
   const options = {};
 
