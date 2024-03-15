@@ -107,6 +107,10 @@ export const POST: APIRoute = async ({ request }) => {
         }
       );
       await linkSchema.create({ longurl: longurl, shorturl, exp: expDate });
+    } else {
+      return new Response(JSON.stringify({ message: "Why you tryna spam my database? I know your IP btw" }), {
+        status: 200,
+      });
     }
   } catch (e) {
     console.log(e);
