@@ -20,6 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
     let link = await linkSchema.findOne({ longurl: linkData.link });
+    const alias = linkData.alias;
     if (link) {
       return new Response(
         JSON.stringify({
@@ -34,7 +35,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     }
 
-    const shorturl = generateShortUrl();
+    const shorturl = generateShortUrl(alias);
 
     const expDate = new Date();
     expDate.setDate(expDate.getDate() + 1);
@@ -53,7 +54,8 @@ export const POST: APIRoute = async ({ request }) => {
   }
 };
 
-function generateShortUrl() {
+function generateShortUrl(alias) {
+  if(alias) return alias;
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
