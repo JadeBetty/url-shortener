@@ -10,6 +10,15 @@ export const prerender = true;
   name="description"
   content="A simple URL shortener made with love by Jade"
 />
+
+
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content=`JadeBetty - URL Shortener`  />
+<meta property="twitter:image" content=`/images/banner.png` />
+
+
+
 <title>JadeBetty - URL</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,3 +27,5 @@ export const prerender = true;
   rel="stylesheet"
 />
 <link rel="icon" type="image/x-icon" href="/images/favicon.png" />
+
+
