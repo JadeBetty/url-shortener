@@ -47,6 +47,7 @@
 
     const generateButton = document.getElementById("generateButton");
     generateButton.addEventListener("click", generateLink);
+    document.getElementById('input-link').addEventListener('keypress', generateLink)
 
     document
       .querySelector("#input-link")
