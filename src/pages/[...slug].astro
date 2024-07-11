@@ -22,8 +22,8 @@ disconnect();
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content=`JadeBetty - URL Shortener`  />
 <meta property="twitter:image" content=`/images/banner.png` />
-longurl ? (
+{ longurl ? (
 <meta http-equiv="refresh" content={`0; url=${longurl.longurl}`} />
-)
+) : <meta http-equiv="refresh" content={`0; url=https://links.jadebetty.me/roll`} />} 
 
 
