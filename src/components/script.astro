@@ -1,61 +1,61 @@
 <script>
-    const urlPattern =
-      /^((http|https):\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?].*)?$/i;
-    const generateLink = async () => {
-      const link = document.getElementById("input-link").value;
-      if (!urlPattern.test(link)) {
-        document.getElementById("hidden-text").classList.remove("hidden");
-        return;
-      } else {
-        document.getElementById("hidden-text").classList.add("hidden");
-      }
-      let lastTime = Number(localStorage.getItem("lastTime"));
-      const currentTime = new Date().getTime();
-      if (!lastTime || currentTime - lastTime >= 20000) {
-        console.log("uh oh, looks like it no no wanna work");
-        try {
-          const response = await fetch("/api/generate", {
-            method: "POST",
-            body: JSON.stringify({ link: link }),
-            headers: { "Content-Type": "application/json" },
-          });
-          console.log(response);
-          if (response.ok) {
-            const data = await response.json();
-            if (data.id === "used-link") {
-              const text = `https://links.jadebetty.me/${data.shortlink}`;
-              document.getElementById("link-p").innerText = text;
-              localStorage.setItem("timeout", "true");
-            } else if (data.id === "missing-link") {
-              document
-                .getElementById("hidden-text")
-                .classList.remove("hidden");
-            } else if (data.id === "success-link") {
-              const text = `https://links.jadebetty.me/${data.shortlink}`;
-              document.getElementById("link-p").innerText = text;
-            }
-            localStorage.setItem("lastTime", `${currentTime}`);
-            console.log(data);
+  const urlPattern =
+    /^((http|https):\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+([/?].*)?$/i;
+  const generateLink = async () => {
+    const link = document.getElementById("input-link").value;
+    if (!urlPattern.test(link)) {
+      document.getElementById("hidden-text").classList.remove("hidden");
+      return;
+    } else {
+      document.getElementById("hidden-text").classList.add("hidden");
+    }
+    let lastTime = Number(localStorage.getItem("lastTime"));
+    const currentTime = new Date().getTime();
+    if (!lastTime || currentTime - lastTime >= 20000) {
+      console.log("uh oh, looks like it no no wanna work");
+      try {
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          body: JSON.stringify({ link: link }),
+          headers: { "Content-Type": "application/json" },
+        });
+        console.log(response);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.id === "used-link") {
+            const text = `https://links.jadebetty.me/${data.shortlink}`;
+            document.getElementById("link-p").innerText = text;
+            localStorage.setItem("timeout", "true");
+          } else if (data.id === "missing-link") {
+            document.getElementById("hidden-text").classList.remove("hidden");
+          } else if (data.id === "success-link") {
+            const text = `https://links.jadebetty.me/${data.shortlink}`;
+            document.getElementById("link-p").innerText = text;
           }
-        } catch (e) {
-          console.log(e);
+          localStorage.setItem("lastTime", `${currentTime}`);
+          console.log(data);
         }
-      } else {
-        document.getElementById("timeout-text").classList.remove("hidden");
+      } catch (e) {
+        console.log(e);
       }
-    };
+    } else {
+      document.getElementById("timeout-text").classList.remove("hidden");
+    }
+  };
 
-    const generateButton = document.getElementById("generateButton");
-    generateButton.addEventListener("click", generateLink);
-    document.getElementById('input-link').addEventListener('keypress', generateLink)
+  const generateButton = document.getElementById("generateButton");
+  generateButton.addEventListener("click", generateLink);
+  document
+    .getElementById("input-link")
+    .addEventListener("keypress", function (event) {
+      if (event.key === "Enter") generateLink();
+    });
 
-    document
-      .querySelector("#input-link")
-      .addEventListener("input", function (e) {
-        if (this.value === "" || urlPattern.test(this.value)) {
-          document.getElementById("hidden-text").classList.add("hidden");
-          const text = `https://links.jadebetty.me/12345`;
-          document.getElementById("link-p").innerText = text;
-        }
-      });
-  </script>
+  document.querySelector("#input-link").addEventListener("input", function (e) {
+    if (this.value === "" || urlPattern.test(this.value)) {
+      document.getElementById("hidden-text").classList.add("hidden");
+      const text = `https://links.jadebetty.me/12345`;
+      document.getElementById("link-p").innerText = text;
+    }
+  });
+</script>
