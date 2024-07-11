@@ -18,6 +18,10 @@ disconnect();
   name="description"
   content="A redirect link"
 />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content=`JadeBetty - URL Shortener`  />
+<meta property="twitter:image" content=`/images/banner.png` />
 longurl ? (
 <meta http-equiv="refresh" content={`0; url=${longurl.longurl}`} />
 )
